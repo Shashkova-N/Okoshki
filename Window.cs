@@ -6,21 +6,22 @@ using System.Threading.Tasks;
 
 namespace Okoshki
 {
-    internal class Window : View
+    internal class Window : Container
     {
+        public string _wintitle;
         public Header _head;
         public Container _container;
-        public Window(int x, int y, int sizex, int sizey) : base(x, y, sizex, sizey)
+        public Window(int x, int y, int sizex, int sizey, string wintitle) : base(x, y, sizex, sizey)
         {
-            _head = new Header(x, y, sizex, sizey, "Okno");
+            _wintitle = wintitle;
+            _head = new Header(x, y, sizex, sizey, wintitle);
             _container = new Container(x, y, sizex, sizey);
         }
-
         public override void Draw() {
-              Drawer.DrawHor(_x, _y, _sizex, _sizey);
-              Drawer.DrawHor(_x, _y + _sizey, _sizex, _sizey);
-              Drawer.DrawVert(_x, _y + 1, _sizex, _sizey);
-              Drawer.DrawVert(_x + _sizex, _y + 1, _sizex, _sizey);
+              Drawer.DrawHor(_x, _y, _sizex);
+              Drawer.DrawHor(_x, _y + _sizey, _sizex);
+              Drawer.DrawVert(_x, _y + 1, _sizey);
+              Drawer.DrawVert(_x + _sizex, _y + 1, _sizey);
               Console.SetCursorPosition(_x + 1, _y + 1);
               for (int i = 1; i <= _sizey - 1; i++){
                   Console.SetCursorPosition(_x + 1, _y + i);
@@ -29,10 +30,13 @@ namespace Okoshki
                         Console.Write(" ");
                     }
               }
+            _head._x = _x;
+            _head._y = _y;
+            _head._sizex = _sizex;
+            _head._sizey = _sizey;
             _head.Draw();
             _container.Draw();
         }
-
         public override void Move(int x, int y) {
             if (x >= 0 && (x + _sizex) < Console.WindowWidth && y >= 0 && (y + _sizey) < Console.WindowHeight)
             {
@@ -41,6 +45,10 @@ namespace Okoshki
                 _head.Move(x, y);
                 _container.Move(x, y);
             }
+        }
+        public override void Pack(View element)
+        {
+            _container.Pack(element);
         }
     }
 }

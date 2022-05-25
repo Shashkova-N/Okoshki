@@ -15,7 +15,6 @@ namespace Okoshki
 
         public override void Draw() {
             int k = 1;
-            _text = "Eto prostoi text";
             Console.SetCursorPosition(_x + 1, _y + 5);
             if (_text[0] != ' ') { _text = " " + _text; }
             for (int i = 0; i < _text.Length; i++)

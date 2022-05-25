@@ -16,7 +16,6 @@ namespace Okoshki
             _sizex = sizex;
             _sizey = sizey;
         }
-
         public virtual void Draw() {}
         public virtual void Move(int x, int y) {
             _x = x;

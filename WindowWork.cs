@@ -11,11 +11,6 @@ namespace Okoshki
 
         public List<Window> _ViewList;
         public int _active;
-
-      //  public WindowWork(List<Window> viewList)
-        //{
-          //  _ViewList = viewList;
-       // }
         public WindowWork(List<Window> viewList, int active)
         {
             _ViewList = viewList;
@@ -28,22 +23,13 @@ namespace Okoshki
                 view.Draw();
             }
         }
-
-        public void AddWin(ConsoleKeyInfo keyinfo)
+        public void AddWin()
         {
-            if ((keyinfo.Modifiers & ConsoleModifiers.Alt) != 0)
-            {
-                if (keyinfo.Key == ConsoleKey.V)
-                {
-                    Header head1 = new Header(40, 10, 20, 10,"New win");
-                    Button button1 = new Button(40, 10, 20, 10);
-                    _ViewList.Add(new Window(40, 10, 20, 10));
-                    _active = _ViewList.Count - 1;
-                    ActiveWin();
-                }
-            }
+            //Header head1 = new Header(40, 10, 20, 10,"New win");
+            _ViewList.Add(new Window(40, 10, 20, 10, "New win"));
+            _active = _ViewList.Count - 1;
+            ActiveWin();
         }
-
         public void ActiveWin()
         {
             Console.Clear();
@@ -58,21 +44,17 @@ namespace Okoshki
             Console.ResetColor();
         }
 
-        public void ChangeActiveWin(ConsoleKeyInfo keyinfo)
+        public void ChangeActiveWin()
         {
-            if (keyinfo.Key == ConsoleKey.Tab)
+            if (_active < _ViewList.Count - 1)
             {
-
-                if (_active < _ViewList.Count - 1)
-                {
-                    ++_active;
-                    ActiveWin();
-                }
-                else if (_active == _ViewList.Count - 1)
-                {
-                    _active = 0;
-                    ActiveWin();
-                }
+                ++_active;
+                ActiveWin();
+            }
+            else if (_active == _ViewList.Count - 1)
+            {
+                _active = 0;
+                ActiveWin();
             }
         }
 
@@ -80,27 +62,56 @@ namespace Okoshki
             switch (keyinfo.Key) {
                 case ConsoleKey.RightArrow:
                     _ViewList[_active].Move(_ViewList[_active]._x + 1, _ViewList[_active]._y);
-                    ActiveWin();
                     break;
                 case ConsoleKey.LeftArrow:
                     _ViewList[_active].Move(_ViewList[_active]._x - 1, _ViewList[_active]._y);
-                    ActiveWin();
                     break;
                 case ConsoleKey.UpArrow:
                     _ViewList[_active].Move(_ViewList[_active]._x, _ViewList[_active]._y - 1);
-                    ActiveWin();
                     break;
                 case ConsoleKey.DownArrow:
                     _ViewList[_active].Move(_ViewList[_active]._x, _ViewList[_active]._y + 1);
-                    ActiveWin();
                     break;
             }
+            ActiveWin();
+        }
+        public void KeyListener()
+        {
+            ConsoleKeyInfo keyinfo = new ConsoleKeyInfo();
+            keyinfo = Console.ReadKey(true);
+
+            if (keyinfo.Key == ConsoleKey.Tab)
+            {
+                ChangeActiveWin();
+            }
+            if ((keyinfo.Modifiers & ConsoleModifiers.Alt) != 0)
+            {
+                if (keyinfo.Key == ConsoleKey.V)
+                {
+                    AddWin();
+                }
+            }
+            if (keyinfo.Key == ConsoleKey.LeftArrow || keyinfo.Key == ConsoleKey.RightArrow || keyinfo.Key == ConsoleKey.UpArrow || keyinfo.Key == ConsoleKey.DownArrow)
+            {
+                Move(keyinfo);
+            }
+            if (keyinfo.Key == ConsoleKey.F1 || keyinfo.Key == ConsoleKey.F2 || keyinfo.Key == ConsoleKey.F3)
+            {
+                ChangeBtn(keyinfo);
+            }
+        }
+
+        public void Pack(params View[] _listCont)
+        {
+            _ViewList[_active].Pack();
+            ActiveWin();
         }
 
         public void ChangeBtn(ConsoleKeyInfo keyinfo) {
             if (keyinfo.Key == ConsoleKey.F3) {
-                Console.BackgroundColor = ConsoleColor.Green;
                 _ViewList[_active].Draw();
+                Console.BackgroundColor = ConsoleColor.Green;
+                _ViewList[_active]._head.Draw();
                 Console.BackgroundColor = ConsoleColor.Cyan;
                 _ViewList[_active]._head.DrawButtonX();
                 Console.ResetColor();
@@ -115,8 +126,9 @@ namespace Okoshki
             }
             else if (keyinfo.Key == ConsoleKey.F2)
             {
-                Console.BackgroundColor = ConsoleColor.Green;
                 _ViewList[_active].Draw();
+                Console.BackgroundColor = ConsoleColor.Green;
+                _ViewList[_active]._head.Draw();
                 Console.BackgroundColor = ConsoleColor.Cyan;
                 _ViewList[_active]._head.DrawButtonO();
                 Console.ResetColor();
@@ -134,21 +146,19 @@ namespace Okoshki
                         _ViewList[_active]._y = 0;
                         _ViewList[_active]._sizex = Console.WindowWidth - 1;
                         _ViewList[_active]._sizey = Console.WindowHeight - 1;
-                        Console.BackgroundColor = ConsoleColor.Green;
                         _ViewList[_active].Draw();
-                        Console.ResetColor();
                     }
                 }
             }
             else if (keyinfo.Key == ConsoleKey.F1)
             {
-                Console.BackgroundColor = ConsoleColor.Green;
                 _ViewList[_active].Draw();
+                Console.BackgroundColor = ConsoleColor.Green;
+                _ViewList[_active]._head.Draw();
                 Console.BackgroundColor = ConsoleColor.Cyan;
                 _ViewList[_active]._head.DrawButtonM();
                 Console.ResetColor();
             }
         }
-
     }
 }

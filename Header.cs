@@ -9,7 +9,6 @@ namespace Okoshki
     internal class Header : View
     {
         public string _title;
-
         public Header(int x, int y, int sizex, int sizey, string title) : base(x, y, sizex, sizey)
         {
             _title = title;
@@ -57,7 +56,7 @@ namespace Okoshki
             Console.WriteLine("___");
         }
         public override void Draw() {
-            Drawer.DrawHor(_x + 1, _y, _sizex - 2, _sizey);
+            Drawer.DrawHor(_x + 1, _y, _sizex - 2);
             Console.SetCursorPosition(_x + 1, _y + 1);
             for (int i = 1; i <= 3 - 1; i++)
             {
@@ -67,7 +66,7 @@ namespace Okoshki
                     Console.Write(" ");
                 }
             }
-            Drawer.DrawHor(_x + 1, _y + 3, _sizex - 2, _sizey);
+            Drawer.DrawHor(_x + 1, _y + 3, _sizex - 2);
             Console.SetCursorPosition(_x+2, _y+2);
             Console.WriteLine(_title);
             DrawButtonX();
