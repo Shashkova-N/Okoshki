@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Okoshki
 {
+
     internal class View
     {
         public int _x, _y, _sizex, _sizey;
@@ -16,10 +17,12 @@ namespace Okoshki
             _sizex = sizex;
             _sizey = sizey;
         }
+        public View() { }
         public virtual void Draw() {}
         public virtual void Move(int x, int y) {
             _x = x;
             _y = y;
         }
+        public virtual void OnClick(){}
     }
 }

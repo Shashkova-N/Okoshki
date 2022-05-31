@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Okoshki
 {
-    internal class Window : Container
+    internal class Window : View
     {
         public string _wintitle;
         public Header _head;
@@ -15,7 +15,7 @@ namespace Okoshki
         {
             _wintitle = wintitle;
             _head = new Header(x, y, sizex, sizey, wintitle);
-            _container = new Container(x, y, sizex, sizey);
+            _container = new Container(x, y, sizex, sizey, 0);
         }
         public override void Draw() {
               Drawer.DrawHor(_x, _y, _sizex);
@@ -46,9 +46,12 @@ namespace Okoshki
                 _container.Move(x, y);
             }
         }
-        public override void Pack(View element)
+        public void Pack(params View[] _listCont)
         {
-            _container.Pack(element);
+            foreach (View element in _listCont)
+            {
+                _container.Pack(element);
+            }
         }
     }
 }

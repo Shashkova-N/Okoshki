@@ -25,7 +25,6 @@ namespace Okoshki
         }
         public void AddWin()
         {
-            //Header head1 = new Header(40, 10, 20, 10,"New win");
             _ViewList.Add(new Window(40, 10, 20, 10, "New win"));
             _active = _ViewList.Count - 1;
             ActiveWin();
@@ -37,7 +36,6 @@ namespace Okoshki
             {
                 if (i != _active) { _ViewList[i].Draw(); }
             }
-
             _ViewList[_active].Draw();
             Console.BackgroundColor = ConsoleColor.Green;
             _ViewList[_active]._head.Draw();
@@ -80,17 +78,7 @@ namespace Okoshki
             ConsoleKeyInfo keyinfo = new ConsoleKeyInfo();
             keyinfo = Console.ReadKey(true);
 
-            if (keyinfo.Key == ConsoleKey.Tab)
-            {
-                ChangeActiveWin();
-            }
-            if ((keyinfo.Modifiers & ConsoleModifiers.Alt) != 0)
-            {
-                if (keyinfo.Key == ConsoleKey.V)
-                {
-                    AddWin();
-                }
-            }
+        
             if (keyinfo.Key == ConsoleKey.LeftArrow || keyinfo.Key == ConsoleKey.RightArrow || keyinfo.Key == ConsoleKey.UpArrow || keyinfo.Key == ConsoleKey.DownArrow)
             {
                 Move(keyinfo);
@@ -99,14 +87,29 @@ namespace Okoshki
             {
                 ChangeBtn(keyinfo);
             }
-        }
+            else if ((keyinfo.Modifiers & ConsoleModifiers.Shift) != 0){
+                if (keyinfo.Key == ConsoleKey.Tab)
+                {
+                    ChangeActiveWin();
+                }
+            }
+            else if (keyinfo.Key == ConsoleKey.Enter)
+            {
+                _ViewList[_active]._container.OnClick();
+            }
+            else if ((keyinfo.Modifiers & ConsoleModifiers.Alt) != 0)
+            {
+                if (keyinfo.Key == ConsoleKey.V)
+                {
+                    AddWin();
+                }
+            }
+            else if (keyinfo.Key == ConsoleKey.Tab)
+            {
+                _ViewList[_active]._container.ChangeElem();
+            }
 
-        public void Pack(params View[] _listCont)
-        {
-            _ViewList[_active].Pack();
-            ActiveWin();
         }
-
         public void ChangeBtn(ConsoleKeyInfo keyinfo) {
             if (keyinfo.Key == ConsoleKey.F3) {
                 _ViewList[_active].Draw();
@@ -137,7 +140,7 @@ namespace Okoshki
                 if (keyinfo3.Key == ConsoleKey.Spacebar)
                 {
                     if (_ViewList[_active]._sizex == Console.WindowWidth - 1 && _ViewList[_active]._sizey == Console.WindowHeight - 1) {
-                        _ViewList[_active]._sizex = 60;
+                        _ViewList[_active]._sizex = 75;
                         _ViewList[_active]._sizey = 20;
                         ActiveWin();
                     }
